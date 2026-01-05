@@ -1,0 +1,21 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  backend:
+    build:
+      context: "D:\\progs\\C#\\MarketplaceCloudProject"
+      dockerfile: "Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/MarketplaceApi.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "marketplaceapi:dev"
+    ports: []
+    volumes:
+    - "D:\\progs\\C#\\MarketplaceCloudProject:/app:rw"
+    - "D:\\progs\\C#\\MarketplaceCloudProject:/src:rw"
+    - "D:\\Utils\\extensions\\NuGetPackages:/home/app/.nuget/packages"
+    working_dir: "/app"

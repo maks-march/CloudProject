@@ -1,0 +1,26 @@
+volumes:
+  pg_data:
+  static:
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: MainDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./
+    expose:
+      - "5089"
+    ports:
+      - "80:5089"
+    depends_on:
+      - postgres
+    volumes:
+      - static:/staticfiles/

@@ -1,73 +1,73 @@
-﻿using MarketplaceApi.Models;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace MarketplaceApi.Services
+namespace MarketplaceApi;
+
+public class ProductService(AppContext context) : IProductService
 {
-    public interface IProductService
+
+    public async Task<IEnumerable<Product>> GetAll()
     {
-        Product? GetById(int id);
-        IEnumerable<Product> GetAll();
-        Product Create(CreateProductDto createDto);
-        Product? Update(int id, UpdateProductDto updateDto);
-        bool Delete(int id);
+        return await context.Products.ToListAsync();
     }
 
-    public class ProductService : IProductService
+    public async Task<Product> GetById(int id)
     {
-        private static List<Product> _products = new()
+        if (id <= 0)
+            throw new ArgumentException("Id не может быть меньше 1");
+        
+        var product = await context.Products.FindAsync(id);
+        if (product == null)
+            throw new NotFoundException("Продукт не найден!");
+        return product;
+    }
+
+    public async Task<Product> Create(CreateProductDto createDto)
+    {
+        var product = new Product
         {
-            new Product { Id = 1, Name = "Laptop", Description = "Gaming laptop", Price = 1500 },
-            new Product { Id = 2, Name = "Smartphone", Description = "Latest model", Price = 800 },
-            new Product { Id = 3, Name = "Headphones", Description = "Noise cancelling", Price = 250 }
+            Name = createDto.Name,
+            Description = createDto.Description,
+            Price = createDto.Price,
+            CreatedAt = DateTime.UtcNow
         };
+        
+        await context.Products.AddAsync(product);
+        await context.SaveChangesAsync();
+        return product;
+    }
 
-        public IEnumerable<Product> GetAll() => _products;
+    public async Task<Product> Patch(int id, UpdateProductDto updateDto)
+    {
+        var product = await GetById(id);
+        product.Name = updateDto.Name ?? product.Name;
+        product.Description = updateDto.Description ?? product.Description;
+        product.Price = updateDto.Price ?? product.Price;
+        product.ImageUrl = updateDto.ImageUrl ?? product.ImageUrl;
 
-        public Product? GetById(int id) => _products.FirstOrDefault(p => p.Id == id);
+        product.UpdatedAt = DateTime.UtcNow;
+        
+        context.Update(product);
+        await context.SaveChangesAsync();
+        return product;
+    }
+    public async Task<Product> Put(int id, CreateProductDto updateDto)
+    {
+        var product = await GetById(id);
+        product.Name = updateDto.Name;
+        product.Description = updateDto.Description;
+        product.Price = updateDto.Price;
 
-        public Product Create(CreateProductDto createDto)
-        {
-            var product = new Product
-            {
-                Id = _products.Count > 0 ? _products.Max(p => p.Id) + 1 : 1,
-                Name = createDto.Name,
-                Description = createDto.Description,
-                Price = createDto.Price,
-                CreatedAt = DateTime.UtcNow
-            };
-            
-            _products.Add(product);
-            return product;
-        }
+        product.UpdatedAt = DateTime.UtcNow;
+        
+        context.Update(product);
+        await context.SaveChangesAsync();
+        return product;
+    }
 
-        public Product? Update(int id, UpdateProductDto updateDto)
-        {
-            var product = GetById(id);
-            if (product == null) return null;
-
-            if (!string.IsNullOrEmpty(updateDto.Name))
-                product.Name = updateDto.Name;
-            
-            if (!string.IsNullOrEmpty(updateDto.Description))
-                product.Description = updateDto.Description;
-            
-            if (updateDto.Price.HasValue)
-                product.Price = updateDto.Price.Value;
-            
-            if (!string.IsNullOrEmpty(updateDto.ImageUrl))
-                product.ImageUrl = updateDto.ImageUrl;
-
-            product.UpdatedAt = DateTime.UtcNow;
-            return product;
-        }
-
-        public bool Delete(int id)
-        {
-            var product = GetById(id);
-            if (product == null) return false;
-            
-            return _products.Remove(product);
-        }
+    public async Task Delete(int id)
+    {
+        var product = GetById(id);
+        context.Remove(product);
+        await context.SaveChangesAsync();
     }
 }
