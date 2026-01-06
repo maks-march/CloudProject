@@ -66,7 +66,7 @@ public class ProductService(AppContext context) : IProductService
 
     public async Task Delete(int id)
     {
-        var product = GetById(id);
+        var product = await GetById(id);
         context.Remove(product);
         await context.SaveChangesAsync();
     }
