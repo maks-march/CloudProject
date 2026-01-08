@@ -75,7 +75,28 @@ resource "yandex_compute_instance" "default" {
           shell: /bin/bash
           ssh_authorized_keys:
             - ${var.ssh_public_key}
-
+      write_files:
+        - path: /app/appsettings.json
+          content: |
+            {
+              "Logging": {
+                "LogLevel": {
+                  "Default": "Information",
+                  "Microsoft.AspNetCore": "Warning"
+                }
+              },
+              "Kestrel": {
+                "Endpoints": {
+                  "Http": {
+                    "Url": "http://0.0.0.0:5089"
+                  }
+                }
+              },
+              "AllowedHosts": "*",
+              "ConnectionStrings": {
+                "DefaultConnection": "Host=${yandex_mdb_postgresql_cluster.postgres.host[0].fqdn};Port=6432;Database=MainDB;Username=${var.db_user};Password=${var.db_password};SslMode=Require;"
+              }
+            }
       runcmd:
         - apt-get update
         - apt-get install -y docker.io docker-compose
@@ -83,27 +104,6 @@ resource "yandex_compute_instance" "default" {
         - systemctl start docker
         - rm -rf /app
         - git clone https://github.com/maks-march/CloudProject /app
-        - cat > /app/appsettings.json << 'JSONEOF'
-{
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    }
-  },
-  "Kestrel": {
-    "Endpoints": {
-      "Http": {
-        "Url": "http://0.0.0.0:5089"
-      }
-    }
-  },
-  "AllowedHosts": "*",
-  "ConnectionStrings": {
-    "DefaultConnection": "Host=${yandex_mdb_postgresql_cluster.postgres.host[0].fqdn};Port=6432;Database=MainDB;Username=${var.db_user};Password=${var.db_password};SslMode=Require;"
-  }
-}
-JSONEOF
         - cd /app && docker-compose up -d
       EOF
   }
