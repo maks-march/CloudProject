@@ -94,7 +94,7 @@ resource "yandex_compute_instance" "default" {
               },
               "AllowedHosts": "*",
               "ConnectionStrings": {
-                "DefaultConnection": "Host=${yandex_mdb_postgresql_cluster.postgres.host[0].fqdn};Port=6432;Database=MainDB;Username=postgres;Password=${var.db_password};SslMode=Require;"
+                "DefaultConnection": "Host=${yandex_mdb_postgresql_cluster.postgres.host[0].fqdn};Port=6432;Database=MainDB;Username=march;Password=${var.db_password};SslMode=Require;"
               }
             }
       runcmd:
@@ -133,13 +133,13 @@ resource "yandex_mdb_postgresql_cluster" "postgres" {
   }
 
   user {
-    name     = "postgres"
+    name     = "march"
     password = var.db_password
   }
 
   database {
     name  = "MainDB"
-    owner = "postgres"
+    owner = "march"
   }
 }
 
