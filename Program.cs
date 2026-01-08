@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using AppContext = MarketplaceApi.AppContext;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var configuration = builder.Configuration;
 // Add services to the container.
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddDataAccess();
+builder.Services.AddDataAccess(configuration);
 builder.Services.AddControllers();
 
 
@@ -51,11 +51,8 @@ using (var scope = app.Services.CreateScope())
     }
 }
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();

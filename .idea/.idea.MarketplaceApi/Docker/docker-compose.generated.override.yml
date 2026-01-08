@@ -17,5 +17,5 @@ services:
     volumes:
     - "D:\\progs\\C#\\MarketplaceCloudProject:/app:rw"
     - "D:\\progs\\C#\\MarketplaceCloudProject:/src:rw"
-    - "D:\\Utils\\extensions\\NuGetPackages:/home/app/.nuget/packages"
+    - "D:\\Utils\\extensions\\NuGetPackages:/root/.nuget/packages"
     working_dir: "/app"

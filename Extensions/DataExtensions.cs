@@ -4,11 +4,12 @@ namespace MarketplaceApi;
 
 public static class DataExtensions
 {
-    public static IServiceCollection AddDataAccess(this IServiceCollection serviceCollection)
+    public static IServiceCollection AddDataAccess(this IServiceCollection serviceCollection, ConfigurationManager configuration)
     {
         serviceCollection.AddDbContext<AppContext>(x =>
         {
-            x.UseNpgsql("Host=postgres;Port=5432;Database=MainDB;Username=postgres;Password=123456;");
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            x.UseNpgsql(connectionString);
         });
         
         return serviceCollection;

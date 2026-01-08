@@ -146,3 +146,4 @@ D:\progs\C#\MarketplaceCloudProject\obj\Debug\net8.0\refint\MarketplaceApi.dll
 D:\progs\C#\MarketplaceCloudProject\obj\Debug\net8.0\MarketplaceApi.pdb
 D:\progs\C#\MarketplaceCloudProject\obj\Debug\net8.0\MarketplaceApi.genruntimeconfig.cache
 D:\progs\C#\MarketplaceCloudProject\obj\Debug\net8.0\ref\MarketplaceApi.dll
+D:\progs\C#\MarketplaceCloudProject\obj\Debug\net8.0\MarketplaceApi.sourcelink.json
