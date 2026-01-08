@@ -67,8 +67,13 @@ variable "admin_pass" {
   type    = string
 }
 
+variable "db_user" {
+  default = "march"
+  type    = string
+}
+
 variable "db_password" {
-  default = "123456"
+  default = "max_marchenko"
   type    = string
 }
 
