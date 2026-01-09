@@ -82,7 +82,7 @@ resource "yandex_compute_instance" "default" {
         - systemctl enable docker
         - systemctl start docker
         - rm -rf /app
-        - git clone https://github.com/maks-march/CloudProject /app
+        - git clone -b docker https://github.com/maks-march/CloudProject /app
         - cd /app && docker-compose up -d
       EOF
   }
