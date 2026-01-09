@@ -31,7 +31,6 @@ C:\Users\Кирилл\Desktop\MarketplaceCloudProject\MarketplaceApi\obj\Debug\n
 C:\Users\Кирилл\Desktop\MarketplaceCloudProject\MarketplaceApi\obj\Debug\net8.0\MarketplaceApi.pdb
 C:\Users\Кирилл\Desktop\MarketplaceCloudProject\MarketplaceApi\obj\Debug\net8.0\MarketplaceApi.genruntimeconfig.cache
 C:\Users\Кирилл\Desktop\MarketplaceCloudProject\MarketplaceApi\obj\Debug\net8.0\ref\MarketplaceApi.dll
-D:\progs\C#\MarketplaceCloudProject\bin\Debug\net8.0\appsettings.Development.json
 D:\progs\C#\MarketplaceCloudProject\bin\Debug\net8.0\appsettings.json
 D:\progs\C#\MarketplaceCloudProject\bin\Debug\net8.0\MarketplaceApi.exe
 D:\progs\C#\MarketplaceCloudProject\bin\Debug\net8.0\MarketplaceApi.deps.json

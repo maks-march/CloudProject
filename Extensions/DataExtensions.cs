@@ -8,7 +8,8 @@ public static class DataExtensions
     {
         serviceCollection.AddDbContext<AppContext>(x =>
         {
-            x.UseNpgsql("Host=localhost;Port=5432;Database=MainDB;Username=march;Password=123456;");
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            x.UseNpgsql(connectionString);
         });
         
         return serviceCollection;
