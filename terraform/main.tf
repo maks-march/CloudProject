@@ -75,28 +75,7 @@ resource "yandex_compute_instance" "default" {
           shell: /bin/bash
           ssh_authorized_keys:
             - ${var.ssh_public_key}
-      write_files:
-        - path: /app/appsettings.json
-          content: |
-            {
-              "Logging": {
-                "LogLevel": {
-                  "Default": "Information",
-                  "Microsoft.AspNetCore": "Warning"
-                }
-              },
-              "Kestrel": {
-                "Endpoints": {
-                  "Http": {
-                    "Url": "http://0.0.0.0:5089"
-                  }
-                }
-              },
-              "AllowedHosts": "*",
-              "ConnectionStrings": {
-                "DefaultConnection": "Host=${yandex_mdb_postgresql_cluster.postgres.host[0].fqdn};Port=6432;Database=MainDB;Username=${var.db_user};Password=${var.db_password};SslMode=Require;"
-              }
-            }
+            
       runcmd:
         - apt-get update
         - apt-get install -y docker.io docker-compose
@@ -114,35 +93,35 @@ resource "yandex_compute_instance" "default" {
   }
 }
 
-resource "yandex_mdb_postgresql_cluster" "postgres" {
-  name        = "marketplace-db"
-  environment = "PRODUCTION"
-  network_id  = yandex_vpc_network.default.id
-
-  config {
-    version = 15
-    resources {
-      resource_preset_id = "s2.micro"
-      disk_type_id       = "network-ssd"
-      disk_size          = 10
-    }
-  }
-
-  host {
-    zone      = "ru-central1-a"
-    subnet_id = yandex_vpc_subnet.default.id
-  }
-
-  user {
-    name     = var.db_user
-    password = var.db_password
-  }
-
-  database {
-    name  = "MainDB"
-    owner = var.db_user
-  }
-}
+# resource "yandex_mdb_postgresql_cluster" "postgres" {
+#   name        = "marketplace-db"
+#   environment = "PRODUCTION"
+#   network_id  = yandex_vpc_network.default.id
+# 
+#   config {
+#     version = 15
+#     resources {
+#       resource_preset_id = "s2.micro"
+#       disk_type_id       = "network-ssd"
+#       disk_size          = 10
+#     }
+#   }
+# 
+#   host {
+#     zone      = "ru-central1-a"
+#     subnet_id = yandex_vpc_subnet.default.id
+#   }
+# 
+#   user {
+#     name     = var.db_user
+#     password = var.db_password
+#   }
+# 
+#   database {
+#     name  = "MainDB"
+#     owner = var.db_user
+#   }
+# }
 
 output "name" {
   value = yandex_compute_instance.default.name
@@ -152,7 +131,7 @@ output "address" {
   value = yandex_compute_instance.default.network_interface.0.nat_ip_address
 }
 
-output "postgres_host" {
-  value = yandex_mdb_postgresql_cluster.postgres.host[0].fqdn
-}
+# output "postgres_host" {
+#   value = yandex_mdb_postgresql_cluster.postgres.host[0].fqdn
+# }
 
