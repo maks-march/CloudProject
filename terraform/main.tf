@@ -93,6 +93,41 @@ resource "yandex_compute_instance" "default" {
   }
 }
 
+# resource "yandex_lb_target_group" "backend_tg" {
+#   name      = "backend-target-group"
+#   region_id = "ru-central1"
+# 
+#   target {
+#     subnet_id = yandex_vpc_subnet.default.id
+#     address   = yandex_compute_instance.default.network_interface.0.ip_address
+#   }
+# }
+# 
+# resource "yandex_lb_network_load_balancer" "backend_nlb" {
+#   name = "backend-load-balancer"
+#   type = "external"
+# 
+#   listener {
+#     name = "http-listener"
+#     port = 80
+#     external_address_spec {
+#       ip_version = "ipv4"
+#     }
+#   }
+# 
+#   attached_target_group {
+#     target_group_id = yandex_lb_target_group.backend_tg.id
+# 
+#     healthcheck {
+#       name = "http"
+#       http_options {
+#         port = 80
+#         path = "/healthBalancer"
+#       }
+#     }
+#   }
+# }
+
 # resource "yandex_mdb_postgresql_cluster" "postgres" {
 #   name        = "marketplace-db"
 #   environment = "PRODUCTION"
